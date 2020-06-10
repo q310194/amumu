@@ -1,49 +1,49 @@
-<<<<<<< HEAD
 import discord
 from discord.ext import commands
+import json
+import random
+import os
 
+#json檔案設定
+with open("setting.json",mode='r',encoding="utf8") as jfile:
+    jdata=json.load(jfile)
+#bot關鍵字
 bot = commands.Bot(command_prefix='$')
 
+#bot事件(發生即觸發)
 @bot.event
 async def on_ready ():
     print(">> Bot is online <<")
 
 @bot.event
 async def on_member_join(member):
-    channel = bot.get_channel(537672020729790510)
+    channel = bot.get_channel(int(jdata['大廳']))
     await channel.send(f'{member.mention} ,歡迎加入!')
 @bot.event
 async def on_member_remove(member):
-    channel = bot.get_channel(537672020729790510)
+    channel = bot.get_channel(int(jdata['大廳']))
     await channel.send(f'{member.mention} 退出了伺服器! QQ')
 
 @bot.command()
-async def ping(ctx):
-    await ctx.send('目前Bot的延遲是:'f'{round(bot.latency*1000)}(ms)')
-bot.run("NzE5NzcxMDcyODE1MzAwNjEy.XuEI5g.1NqXyIpruxwsaxirGFV5hvC7tG4")
-
-=======
-import discord
-from discord.ext import commands
-
-bot = commands.Bot(command_prefix='$')
-
-@bot.event
-async def on_ready ():
-    print(">> Bot is online <<")
-
-@bot.event
-async def on_member_join(member):
-    channel = bot.get_channel(537672020729790510)
-    await channel.send(f'{member.mention} ,歡迎加入!')
-@bot.event
-async def on_member_remove(member):
-    channel = bot.get_channel(537672020729790510)
-    await channel.send(f'{member.mention} 退出了伺服器! QQ')
+async def load(ctx,extension):
+    bot.load_extension(f'cmds.{extension}')
+    await ctx.send(f'Loaded {extension} done.')
 
 @bot.command()
-async def ping(ctx):
-    await ctx.send('目前Bot的延遲是:'f'{round(bot.latency*1000)}(ms)')
-bot.run("NzE5NzcxMDcyODE1MzAwNjEy.XuEDNw.gBw-P8C6eqn2W0qAVeiiJaaLXPg")
+async def unload(ctx,extension):
+    bot.unload_extension(f'cmds.{extension}')
+    await ctx.send(f'Un-Loaded {extension} done.')
 
->>>>>>> e72e7da48d19fd40874a0d3c814fb58ff6922e1b
+@bot.command()
+async def reload(ctx,extension):
+    bot.reload_extension(f'cmds.{extension}')
+    await ctx.send(f'Re-Loaded {extension} done.')
+
+for Filename in os.listdir('./cmds'):
+    if Filename.endswith('.py'):
+        bot.load_extension(f'cmds.{Filename[:-3]}')
+
+
+if __name__ == "__main__":
+    bot.run(jdata['TOKEN'])
+
