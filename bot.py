@@ -15,9 +15,9 @@ async def on_member_join(member):
 async def on_member_remove(member):
     channel = bot.get_channel(537672020729790510)
     await channel.send(f'{member.mention} 退出了伺服器! QQ')
-@print
+
 @bot.command()
 async def ping(ctx):
     await ctx.send('目前Bot的延遲是:'f'{round(bot.latency*1000)}(ms)')
-bot.run("NzE5NzcxMDcyODE1MzAwNjEy.XuEDNw.gBw-P8C6eqn2W0qAVeiiJaaLXPg")
+bot.run("NzE5NzcxMDcyODE1MzAwNjEy.XuEI5g.1NqXyIpruxwsaxirGFV5hvC7tG4")
 
