@@ -3,26 +3,30 @@ from discord.ext import commands
 import json
 import random
 import os
+from os import walk
+import requests
+from pyquery import PyQuery as pq
+import csv,re
+
+
 
 #json檔案設定
 with open("setting.json",mode='r',encoding="utf8") as jfile:
     jdata=json.load(jfile)
 #bot關鍵字
+
+
 bot = commands.Bot(command_prefix='$')
 
 #bot事件(發生即觸發)
 @bot.event
 async def on_ready ():
+    activity = discord.Game(name="$about", type=3)
+    await bot.change_presence(status=discord.Status.idle, activity=activity)
     print(">> Bot is online <<")
 
-@bot.event
-async def on_member_join(member):
-    channel = bot.get_channel(int(jdata['大廳']))
-    await channel.send(f'{member.mention} ,歡迎加入!')
-@bot.event
-async def on_member_remove(member):
-    channel = bot.get_channel(int(jdata['大廳']))
-    await channel.send(f'{member.mention} 退出了伺服器! QQ')
+
+
 
 @bot.command()
 async def load(ctx,extension):
